@@ -59,6 +59,9 @@
     });
     socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
+
+    });
+    socket.on('chat notify', function(msg){
         notifyMe(msg);
     });
 </script>

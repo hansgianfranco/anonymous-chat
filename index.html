@@ -1,69 +1,275 @@
 <!doctype html>
 <html>
+
 <head>
-    <title>Socket.IO chat</title>
+    <title>Anonymous Chat</title>
+    <!-- Latest compiled and minified CSS -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800italic,800' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font: 13px Helvetica, Arial; }
-        form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-        form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-        form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-        #messages { list-style-type: none; margin: 0; padding: 0; }
-        #messages li { padding: 5px 10px; }
-        #messages li:nth-child(odd) { background: #eee; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family:'Open Sans', sans-serif;
+            font: 13px;
+        }
+        
+        ul{
+                padding: 10px;
+        }
+        
+        ul li {
+    list-style: none;
+}
+        
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+        }
+        
+        #messages > div {
+            padding: 20px;
+        }
+        
+        #messages > div:nth-child(odd) {
+            background: #eee;
+        }
+
+        .panel-footer{
+            border:0;
+            overflow: hidden;    
+        }
+        .col-md-9,
+        .col-md-3{
+            padding-left:0!important;
+            padding-right:0!important;
+        }
+        .panel-chatroom .panel-heading{
+                background-color: #00A8B3;
+                    color: #FFFFFF;
+        }
+        
+        .panel-chatmessage .panel-heading{
+                background-color: #41CAC0;
+                    color: #FFFFFF;
+        }
+        
+        .panel-chatuser .panel-heading{
+                background-color: #00A8B3;
+                    color: #FFFFFF;
+        }
+        
+        .panel,
+        .panel-heading{
+            border:0;
+            border-radius:0;
+        }
+        .panel-body{
+            padding:0;
+            border-left:1px solid #ddd;
+            border-right:1px solid #ddd;
+        }
+        .panel-heading h1,
+        .panel-heading h2{
+        margin:12px 20px;
+        text-align:center;
+        }
+        
+        .image-thumb img{
+                border: 3px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background: #fff;
+            
+        }
+        
     </style>
 </head>
+
 <body>
-<ul id="messages"></ul>
-<form action="" style="overflow: scroll;margin-bottom:40px;position:relative;">
-    <input id="m" autocomplete="off" /><button>Send</button>
-</form>
+    <div class="container-fluid inner">
 
-<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-<script>
-    function  notifyMe(mess)  {
-        if  (!("Notification"  in  window))  {
-            alert("Este navegador no soporta notificaciones de escritorio");
-        }
-        else  if  (Notification.permission  ===  "granted")  {
-            var  options  =   {
-                body:   mess,
-                icon:   "url_del_icono.jpg",
-                dir :   "ltr"
-            };
-            var  notification  =  new  Notification("Mensaje", options);
-        }
-        else  if  (Notification.permission  !==  'denied')  {
-            Notification.requestPermission(function (permission)  {
-                if  (!('permission'  in  Notification))  {
-                    Notification.permission  =  permission;
-                }
-                if  (permission  ===  "granted")  {
-                    var  options  =   {
-                        body:   mess,
-                        icon:   "url_del_icono.jpg",
-                        dir :   "ltr"
-                    };
-                    var  notification  =  new  Notification("Mensaje", options);
-                }
-            });
-        }
-    }
+        
 
-    var socket = io();
-    $('form').submit(function(){
-        socket.emit('chat message', $('#m').val());
-        $('#m').val('');
-        return false;
-    });
-    socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+        <div class="row">
+            
+               
+<div class="col-md-3">     
 
-    });
-    socket.on('chat notify', function(msg){
-        notifyMe(msg);
-    });
-</script>
+<div class="panel panel-default panel-chatroom">
+            <div class="panel-heading"><h2><i class="fa fa-comments-o">&nbsp;</i> Anonymous Chat</h2></div>
+            <div class="panel-body">
+                
+                <ul class="chat-list">
+                          <li class="">
+                              <a class="lobby" href="lobby.html">
+                                  <h4>
+                                      <i class="fa fa-list"></i>
+                                      Rooms
+                                  </h4>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="chat_room.html">
+                                <i class="fa fa-rocket"></i>
+                                <span>Marketing</span>
+                                <i class="fa fa-times pull-right"></i>
+                              </a>
+                          </li>
+                          <li class="active">
+                              <a href="chat_room.html">
+                                  <i class="fa fa-rocket"></i>
+                                  <span>Water Cooler</span>
+                                  <i class="fa fa-times pull-right"></i>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="chat_room.html">
+                                  <i class="fa fa-rocket"></i>
+                                  <span>Design Lounge</span>
+                                  <i class="fa fa-times pull-right"></i>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="chat_room.html">
+                                  <i class="fa fa-rocket"></i>
+                                  <span>Development</span>
+                                  <i class="fa fa-times pull-right"></i>
+                              </a>
+                          </li>
+
+                      </ul>
+                
+                </div>
+ </div>               
+
+  <div class="panel panel-default panel-chatuser">
+            <div class="panel-heading"><h2>Usuarios conectados: <span id="users"></span></h2></div>
+
+ </div>    
+
+  </div>          
+            
+<div class="col-md-9">
+    
+    
+    <div class="panel panel-default panel-chatmessage">
+            <div class="panel-heading"><h2>Mensajes</h2></div>
+            <div class="panel-body">
+                
+                <div id="messages"></div>
+                
+                
+                
+            </div>
+            <div class="panel-footer">
+                    <form class="panel-form" action="">
+                    <div class="row">
+                        <div class="form-group col-md-10">
+                        <input class="form-control input-lg" id="m" placeholder="Escribe algo..." autocomplete="off" />
+                    </div>
+                    <div class="form-group col-md-2">
+                            
+                        <button class="btn btn-danger btn-block btn-lg"><i class="fa fa-send">&nbsp;</i> Enviar</button>
+                    </div>
+                    </div>
+                </form>
+                </div>
+        </div>
+    
+</div>            
+            
+  
+            
+        </div>
+
+
+    </div>
+
+    <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+    <script>
+        function notifyMe(mess) {
+            if (!("Notification" in window)) {
+                alert("Este navegador no soporta notificaciones de escritorio");
+            }
+            else if (Notification.permission === "granted") {
+                var options = {
+                    body: mess,
+                    icon: "//4.bp.blogspot.com/-fk_WkYdAWFk/UJp_GU_7HwI/AAAAAAAAABo/jZyQSa6JfBA/s1600/utente+anonimo+BN.png",
+                    dir: "ltr",
+                    tag: "notifi"
+                };
+                var notification = new Notification("Mensaje", options);
+                notification.onclick = function () {
+                                                    window.focus();
+                                                  };
+            }
+            else if (Notification.permission !== 'denied') {
+                Notification.requestPermission(function(permission) {
+                    if (!('permission' in Notification)) {
+                        Notification.permission = permission;
+                    }
+                    if (permission === "granted") {
+                        var options = {
+                            body: mess,
+                            icon: "//4.bp.blogspot.com/-fk_WkYdAWFk/UJp_GU_7HwI/AAAAAAAAABo/jZyQSa6JfBA/s1600/utente+anonimo+BN.png",
+                            dir: "ltr",
+                            tag: "notifi"
+                        };
+                        var notification = new Notification("Mensaje", options);
+                        notification.onclick = function () {
+                                                            window.focus();
+                                                          };
+                    }
+                });
+            }
+        }
+
+        var socket = io();
+        $('form').submit(function() {
+            if($('#m').val()!=""){
+            socket.emit('chat message', $('#m').val());
+            $('#m').val('');
+            }
+            return false;
+        });
+        socket.on('hi', function() {
+            $('#messages').append($('<div style="color:#333;">').text("Fuevo Fonectado"));
+        })
+
+        socket.on('count',function(data){
+            $("#users").html(data.number);
+        })
+        
+        socket.on('chat message', function(msg) {
+            if(msg.indexOf('.png')!=-1 || msg.indexOf('.jpg')!=-1 ||  msg.indexOf('.jpeg')!=-1 || msg.indexOf('.gif')!=-1){
+                msg = '<div class="image-thumb"><a target="_blank" href="'+msg+'"><img style="max-width:300px;" src="'+msg+'"/></a></div>';
+                $('#messages').append($('<div>').html(msg));
+            }
+            else if (msg.indexOf('http')!=-1) {
+                msg = '<a target="_blank" href="'+msg+'">'+msg+'</a>';
+                $('#messages').append($('<div>').html(msg));
+            }
+            else{
+            $('#messages').append($('<div>').text(msg));}
+
+        });
+        socket.on('chat notify', function(msg) {
+            notifyMe(msg);
+        });
+    </script>
 </body>
+
 </html>
